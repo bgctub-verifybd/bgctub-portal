@@ -20,7 +20,7 @@
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
         header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .header-left { display: flex; align-items: center; gap: 15px; max-width: 1000px; margin: 0 auto; width: 100%; }
-        .logo-img { width: 65px; height: 65px; object-fit: contain; background: white; border-radius: 50%; padding: 5px; }
+        .logo-img { width: 65px; height: 65px; object-fit: contain; background: white; border-radius: 50%; padding: 4px; }
         .univ-title h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; }
         .univ-title p { font-size: 0.85rem; opacity: 0.9; }
         .container { max-width: 900px; margin: 25px auto; padding: 0 15px; width: 100%; flex: 1; }
@@ -32,8 +32,6 @@
         .search-box input:focus { border-color: var(--primary); }
         .search-box button { background-color: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
         .search-box button:hover { background-color: var(--primary-dark); }
-        .hint { margin-top: 12px; font-size: 0.85rem; color: #777; }
-        .hint span { background: #eef5f1; color: var(--primary); padding: 3px 8px; border-radius: 4px; font-weight: 600; cursor: pointer; }
         .profile-container { display: none; animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .bio-card { background: var(--card-bg); border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; border-left: 6px solid var(--primary); }
@@ -57,7 +55,7 @@
 <body>
     <header>
         <div class="header-left">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/BGC_Trust_University_Bangladesh_Logo.png" alt="BGCTUB Logo" class="logo-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135755.png'">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/BGC_Trust_University_Bangladesh_Logo.png" alt="BGCTUB Logo" class="logo-img">
             <div class="univ-title">
                 <h1>BGC Trust University Bangladesh (BGCTUB)</h1>
                 <p>Chandanaish, Chittagong | Official Degree & Result Verification Portal</p>
@@ -72,8 +70,7 @@
                 <input type="text" id="rollInput" placeholder="e.g. 1316010" autocomplete="off">
                 <button onclick="searchResult()">Verify</button>
             </div>
-            <div id="errorMsg" class="error-msg">Invalid Roll Number. Try sample roll: 1316010</div>
-            <div class="hint">Quick Try - Click Roll: <span onclick="autofill('1316010')">1316010</span></div>
+            <div id="errorMsg" class="error-msg">Invalid Roll Number. Please enter a valid student roll number.</div>
         </div>
         <div id="profileContainer" class="profile-container">
             <div class="bio-card">
@@ -111,17 +108,11 @@
                     { title: "Semester IV", gpa: "2.99", courses: [["PHR 2201", "Physiology - II", "3", "B+", "3.25"], ["PHR 2201 L", "Physiology - II Lab", "1", "A", "3.75"], ["PHR 2202", "Pharmaceutical Microbiology - II", "3", "C+", "2.50"], ["PHR 2203", "Pharmaceutical Technology - I", "3", "B-", "2.75"], ["PHR 2203 L", "Pharmaceutical Technology - I Lab", "1", "A-", "3.50"], ["PHR 2204", "Pharmacology - I", "3", "C", "2.25"], ["PHR 2204 L", "Pharmacology - I Lab", "1", "A-", "3.50"], ["PHR 2205", "Biochemistry & Cellular Biology", "3", "B", "3.00"], ["PHR 2205 L", "Biochemistry & Cellular Biology Lab", "1", "A", "3.75"], ["PHR-V 004", "Viva-Voce", "1", "A+", "4.00"]] },
                     { title: "Semester V", gpa: "3.20", courses: [["PHR 3101", "Pharmaceutical Analysis - I", "3", "A-", "3.50"], ["PHR 3101 L", "Pharmaceutical Analysis - I Lab", "1", "A+", "4.00"], ["PHR 3102", "Pharmaceutical Technology - II", "3", "D", "2.00"], ["PHR 3102 L", "Pharmaceutical Technology - II Lab", "1", "A-", "3.50"], ["PHR 3103", "Pharmacology - II", "3", "B+", "3.25"], ["PHR 3103 L", "Pharmacology - II Lab", "1", "B+", "3.25"], ["PHR 3104", "Medicinal Chemistry - I", "3", "B+", "3.25"], ["PHR 3104 L", "Medicinal Chemistry - I Lab", "1", "A+", "4.00"], ["PHR 3105", "Pathology", "3", "B+", "3.25"], ["PHR-V 005", "Viva-Voce", "1", "A-", "3.50"]] },
                     { title: "Semester VI", gpa: "3.03", courses: [["PHR 3201", "Pharmaceutical Analysis - II", "3", "C+", "2.50"], ["PHR 3201 L", "Pharmaceutical Analysis - II Lab", "1", "A", "3.75"], ["PHR 3202", "Pharmaceutical Technology - III", "3", "B-", "2.75"], ["PHR 3202 L", "Pharmaceutical Technology - III Lab", "1", "A-", "3.50"], ["PHR 3203", "Pharmacology - III", "3", "B", "3.00"], ["PHR 3203 L", "Pharmacology - III Lab", "1", "A-", "3.50"], ["PHR 3204", "Medicinal Chemistry - II", "3", "C+", "2.50"], ["PHR 3204 L", "Medicinal Chemistry - II Lab", "1", "A+", "4.00"], ["PHR 3205", "Hospital & Community Pharmacy", "3", "B+", "3.25"], ["PHR-V 006", "Viva-Voce", "1", "A", "3.75"]] },
-                    { title: "Semester VII", gpa: "3.43", courses: [["PHR 4101", "Pharmaceutical Analysis - III", "3", "B+", "3.25"], ["PHR 4101 L", "Pharmaceutical Analysis - III Lab", "1", "A", "3.75"], ["PHR 4102", "Medicinal Chemistry - III", "1.5", "A-", "3.50"], ["PHR 4103", "Cosmetology", "3", "B+", "3.25"], ["PHR 4103 L", "Cosmetology Lab", "1", "A+", "4.00"], ["PHR 4104", "Biopharmaceutics - I", "3", "B+", "3.25"], ["PHR 4104 L", "Biopharmaceutics - I Lab", "1", "B+", "3.25"], ["PHR 4105", "Pharmaceutical Engineering", "3", "B", "3.00"], ["PHR 4106", "Clinical Pharmacy", "3", "A+", "4.00"], ["PHR-V 007", "Viva-Voce", "1", "A", "3.75"]] },
+                    { title: "Semester VII", gpa: "3.43", courses: [["PHR 4101", "Pharmaceutical Analysis - III", "3", "B+", "3.25"], ["PHR 4101 L", "Pharmaceutical Analysis - III Lab", "1", "A", "3.75"],. ["PHR 4102", "Medicinal Chemistry - III", "1.5", "A-", "3.50"], ["PHR 4103", "Cosmetology", "3", "B+", "3.25"], ["PHR 4103 L", "Cosmetology Lab", "1", "A+", "4.00"], ["PHR 4104", "Biopharmaceutics - I", "3", "B+", "3.25"], ["PHR 4104 L", "Biopharmaceutics - I Lab", "1", "B+", "3.25"], ["PHR 4105", "Pharmaceutical Engineering", "3", "B", "3.00"], ["PHR 4106", "Clinical Pharmacy", "3", "A+", "4.00"], ["PHR-V 007", "Viva-Voce", "1", "A", "3.75"]] },
                     { title: "Semester VIII", gpa: "3.33", courses: [["PHR 4201", "Pharmaceutical Biotechnology", "3", "B", "3.00"], ["PHR 4202", "Pharmacology - IV", "3", "A", "3.75"], ["PHR 4203", "Biopharmaceutics - II", "3", "A-", "3.50"], ["PHR 4203 L", "Biopharmaceutics - II Lab", "1", "A-", "3.50"], ["PHR 4204", "Pharmaceutical Quality Control & Analytical Method Validation", "1.5", "B+", "3.25"], ["PHR 4205", "Pharmaceutical Marketing & Management", "3", "B-", "2.75"], ["PHR 4206", "Pharmaceutical Regulatory Affairs", "3", "B+", "3.25"], ["PHR 4207", "Project Work", "3", "A-", "3.50"], ["PHR 4208", "In-Plant Training", "1.5", "A-", "3.50"], ["PHR-V 008", "Viva-Voce", "1", "A", "3.75"]] }
                 ]
             }
-            // ভবিষ্যতে নতুন ছাত্র যোগ করতে চাইলে এখানে কমা (,) দিয়ে একইভাবে আরেকটি রোল যুক্ত করতে পারবেন
         };
-
-        function autofill(roll) { 
-            document.getElementById('rollInput').value = roll; 
-            searchResult(); 
-        }
 
         function searchResult() {
             const roll = document.getElementById('rollInput').value.trim();
@@ -132,7 +123,6 @@
                 errorMsg.style.display = 'none';
                 const student = studentData[roll];
                 
-                // নাম এবং অন্যান্য তথ্য ডাইনামিক করা
                 document.getElementById('valName').innerText = student.name;
                 document.getElementById('valRoll').innerText = student.roll;
                 document.getElementById('valReg').innerText = student.reg;
