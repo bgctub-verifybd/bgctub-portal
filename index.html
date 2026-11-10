@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGCTUB - Official Student Verification Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a5c36;
+            --primary-dark: #063d23;
+            --accent: #d4af37;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border: #e0e0e0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-left { display: flex; align-items: center; gap: 15px; max-width: 1000px; margin: 0 auto; width: 100%; }
+        .logo-img { width: 65px; height: 65px; object-fit: contain; background: white; border-radius: 50%; padding: 5px; }
+        .univ-title h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; }
+        .univ-title p { font-size: 0.85rem; opacity: 0.9; }
+        .container { max-width: 900px; margin: 25px auto; padding: 0 15px; width: 100%; flex: 1; }
+        .search-card { background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; margin-bottom: 25px; border-top: 5px solid var(--accent); }
+        .search-card h2 { margin-bottom: 8px; color: var(--primary); font-size: 1.4rem; }
+        .search-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+        .search-box { display: flex; gap: 10px; max-width: 480px; margin: 0 auto; }
+        .search-box input { flex: 1; padding: 12px 15px; border: 2px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+        .search-box input:focus { border-color: var(--primary); }
+        .search-box button { background-color: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .search-box button:hover { background-color: var(--primary-dark); }
+        .hint { margin-top: 12px; font-size: 0.85rem; color: #777; }
+        .hint span { background: #eef5f1; color: var(--primary); padding: 3px 8px; border-radius: 4px; font-weight: 600; cursor: pointer; }
+        .profile-container { display: none; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bio-card { background: var(--card-bg); border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; border-left: 6px solid var(--primary); }
+        .bio-details h3 { font-size: 1.3rem; color: var(--primary-dark); margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .bio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; font-size: 0.9rem; color: var(--text-muted); }
+        .bio-grid strong { color: var(--text-main); }
+        .semester-section { background: var(--card-bg); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .semester-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; }
+        .semester-header h3 { color: var(--primary); font-size: 1.1rem; }
+        .gpa-badge { background: #eef5f1; color: var(--primary); padding: 5px 12px; border-radius: 15px; font-weight: 700; font-size: 0.85rem; }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 500px; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background-color: #f8fafc; font-weight: 600; color: #444; }
+        .cgpa-summary-card { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 22px; border-radius: 12px; text-align: center; font-size: 1.1rem; font-weight: 600; display: flex; justify-content: space-around; align-items: center; margin-top: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .cgpa-summary-card span { color: var(--accent); font-size: 1.5rem; }
+        .error-msg { color: #d32f2f; margin-top: 12px; font-size: 0.9rem; display: none; font-weight: 500; }
+        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border); background: white; margin-top: auto; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/BGC_Trust_University_Bangladesh_Logo.png" alt="BGCTUB Logo" class="logo-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135755.png'">
+            <div class="univ-title">
+                <h1>BGC Trust University Bangladesh (BGCTUB)</h1>
+                <p>Chandanaish, Chittagong | Official Degree & Result Verification Portal</p>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="search-card">
+            <h2>BGCTUB Academic Transcript Verification</h2>
+            <p>Enter official Student Roll Number to verify B.Pharm academic records globally.</p>
+            <div class="search-box">
+                <input type="text" id="rollInput" placeholder="e.g. 1316010" autocomplete="off">
+                <button onclick="searchResult()">Verify</button>
+            </div>
+            <div id="errorMsg" class="error-msg">Invalid Roll Number. Try sample roll: 1316010</div>
+            <div class="hint">Quick Try - Click Roll: <span onclick="autofill('1316010')">1316010</span></div>
+        </div>
+        <div id="profileContainer" class="profile-container">
+            <div class="bio-card">
+                <div class="bio-details">
+                    <h3>BGCTUB - Official Student Academic Record</h3>
+                    <div class="bio-grid">
+                        <div><strong>Student Name:</strong> <span id="valName">MD. IBRAHIM</span></div>
+                        <div><strong>Roll No:</strong> <span id="valRoll">1316010</span></div>
+                        <div><strong>Registration No:</strong> <span id="valReg">130816010</span></div>
+                        <div><strong>Degree Awarded:</strong> Bachelor of Pharmacy (Honours)</div>
+                        <div><strong>Session:</strong> January - June 2017</div>
+                        <div><strong>Father's Name:</strong> Md. Khurshed Alam Chowdhury</div>
+                        <div><strong>Mother's Name:</strong> Shahin Akter</div>
+                        <div><strong>Result Published:</strong> November 29, 2017</div>
+                        <div><strong>Status:</strong> Verified & Authentic</div>
+                    </div>
+                </div>
+            </div>
+            <div id="semestersList"></div>
+            <div class="cgpa-summary-card">
+                <div>Total Credits: <span>160</span></div>
+                <div>Final CGPA: <span id="valCgpa">3.14</span></div>
+            </div>
+        </div>
+    </div>
+    <footer>&copy; 2026 BGC Trust University Bangladesh (BGCTUB). All Rights Reserved. Official Digital Verification Service.</footer>
+    <script>
+        const studentData = {
+            "1316010": {
+                name: "MD. IBRAHIM", roll: "1316010", reg: "130816010", cgpa: "3.14",
+                semesters: [
+                    { title: "Semester I", gpa: "2.71", courses: [["PHR 1101", "Inorganic Pharmacy - I", "3", "C", "2.25"], ["PHR 1101 L", "Inorganic Pharmacy - I Lab", "1", "B-", "2.75"], ["PHR 1102", "Physical Pharmacy - I", "3", "B+", "3.25"], ["PHR 1102 L", "Physical Pharmacy - I Lab", "1", "A+", "4.00"], ["MAT 1001", "Mathematics & Statistics", "3", "D", "2.00"], ["COS 1001", "Computer Science", "3", "B", "3.00"], ["ENG 1001", "Introductory English", "3", "C", "2.25"], ["PHR-V 001", "Viva-Voce", "1", "A", "3.75"]] },
+                    { title: "Semester II", gpa: "3.01", courses: [["PHR 1201", "Inorganic Pharmacy - II", "3", "B-", "2.75"], ["PHR 1201 L", "Inorganic Pharmacy - II Lab", "1", "A-", "3.50"], ["PHR 1202", "Organic Pharmacy - I", "3", "C+", "2.50"], ["PHR 1202 L", "Organic Pharmacy - I Lab", "1", "A-", "3.75"], ["PHR 1203", "Physical Pharmacy - II", "3", "C+", "2.50"], ["PHR 1203 L", "Physical Pharmacy - II Lab", "1", "A", "3.75"], ["PHR 1204", "Pharmacognosy - I", "3", "B+", "3.25"], ["PHR 1204 L", "Pharmacognosy - I Lab", "1", "A-", "3.50"], ["BS 1001", "Bangladesh Studies", "3", "A-", "3.50"], ["PHR-V 004", "Viva-Voce", "1", "C+", "2.50"]] },
+                    { title: "Semester III", gpa: "3.34", courses: [["PHR 2101", "Organic Pharmacy - II", "3", "B-", "2.75"], ["PHR 2101 L", "Organic Pharmacy - II Lab", "1", "A-", "3.50"], ["PHR 2102", "Pharmacognosy - II", "3", "A-", "3.50"], ["PHR 2102 L", "Pharmacognosy - II Lab", "1", "B", "3.00"], ["PHR 2103", "Basic Anatomy", "1.5", "A+", "4.00"], ["PHR 2104", "Physiology - I", "3", "B", "3.00"], ["PHR 2104 L", "Physiology - I Lab", "1", "A-", "3.50"], ["PHR 2105", "Pharmaceutical Microbiology - I", "3", "A-", "3.50"], ["PHR 2105 L", "Pharmaceutical Microbiology - I Lab", "1", "A+", "4.00"], ["PHR-V 003", "Viva-Voce", "1", "A-", "3.50"]] },
+                    { title: "Semester IV", gpa: "2.99", courses: [["PHR 2201", "Physiology - II", "3", "B+", "3.25"], ["PHR 2201 L", "Physiology - II Lab", "1", "A", "3.75"], ["PHR 2202", "Pharmaceutical Microbiology - II", "3", "C+", "2.50"], ["PHR 2203", "Pharmaceutical Technology - I", "3", "B-", "2.75"], ["PHR 2203 L", "Pharmaceutical Technology - I Lab", "1", "A-", "3.50"], ["PHR 2204", "Pharmacology - I", "3", "C", "2.25"], ["PHR 2204 L", "Pharmacology - I Lab", "1", "A-", "3.50"], ["PHR 2205", "Biochemistry & Cellular Biology", "3", "B", "3.00"], ["PHR 2205 L", "Biochemistry & Cellular Biology Lab", "1", "A", "3.75"], ["PHR-V 004", "Viva-Voce", "1", "A+", "4.00"]] },
+                    { title: "Semester V", gpa: "3.20", courses: [["PHR 3101", "Pharmaceutical Analysis - I", "3", "A-", "3.50"], ["PHR 3101 L", "Pharmaceutical Analysis - I Lab", "1", "A+", "4.00"], ["PHR 3102", "Pharmaceutical Technology - II", "3", "D", "2.00"], ["PHR 3102 L", "Pharmaceutical Technology - II Lab", "1", "A-", "3.50"], ["PHR 3103", "Pharmacology - II", "3", "B+", "3.25"], ["PHR 3103 L", "Pharmacology - II Lab", "1", "B+", "3.25"], ["PHR 3104", "Medicinal Chemistry - I", "3", "B+", "3.25"], ["PHR 3104 L", "Medicinal Chemistry - I Lab", "1", "A+", "4.00"], ["PHR 3105", "Pathology", "3", "B+", "3.25"], ["PHR-V 005", "Viva-Voce", "1", "A-", "3.50"]] },
+                    { title: "Semester VI", gpa: "3.03", courses: [["PHR 3201", "Pharmaceutical Analysis - II", "3", "C+", "2.50"], ["PHR 3201 L", "Pharmaceutical Analysis - II Lab", "1", "A", "3.75"], ["PHR 3202", "Pharmaceutical Technology - III", "3", "B-", "2.75"], ["PHR 3202 L", "Pharmaceutical Technology - III Lab", "1", "A-", "3.50"], ["PHR 3203", "Pharmacology - III", "3", "B", "3.00"], ["PHR 3203 L", "Pharmacology - III Lab", "1", "A-", "3.50"], ["PHR 3204", "Medicinal Chemistry - II", "3", "C+", "2.50"], ["PHR 3204 L", "Medicinal Chemistry - II Lab", "1", "A+", "4.00"], ["PHR 3205", "Hospital & Community Pharmacy", "3", "B+", "3.25"], ["PHR-V 006", "Viva-Voce", "1", "A", "3.75"]] },
+                    { title: "Semester VII", gpa: "3.43", courses: [["PHR 4101", "Pharmaceutical Analysis - III", "3", "B+", "3.25"], ["PHR 4101 L", "Pharmaceutical Analysis - III Lab", "1", "A", "3.75"], ["PHR 4102", "Medicinal Chemistry - III", "1.5", "A-", "3.50"], ["PHR 4103", "Cosmetology", "3", "B+", "3.25"], ["PHR 4103 L", "Cosmetology Lab", "1", "A+", "4.00"], ["PHR 4104", "Biopharmaceutics - I", "3", "B+", "3.25"], ["PHR 4104 L", "Biopharmaceutics - I Lab", "1", "B+", "3.25"], ["PHR 4105", "Pharmaceutical Engineering", "3", "B", "3.00"], ["PHR 4106", "Clinical Pharmacy", "3", "A+", "4.00"], ["PHR-V 007", "Viva-Voce", "1", "A", "3.75"]] },
+                    { title: "Semester VIII", gpa: "3.33", courses: [["PHR 4201", "Pharmaceutical Biotechnology", "3", "B", "3.00"], ["PHR 4202", "Pharmacology - IV", "3", "A", "3.75"], ["PHR 4203", "Biopharmaceutics - II", "3", "A-", "3.50"], ["PHR 4203 L", "Biopharmaceutics - II Lab", "1", "A-", "3.50"], ["PHR 4204", "Pharmaceutical Quality Control & Analytical Method Validation", "1.5", "B+", "3.25"], ["PHR 4205", "Pharmaceutical Marketing & Management", "3", "B-", "2.75"], ["PHR 4206", "Pharmaceutical Regulatory Affairs", "3", "B+", "3.25"], ["PHR 4207", "Project Work", "3", "A-", "3.50"], ["PHR 4208", "In-Plant Training", "1.5", "A-", "3.50"], ["PHR-V 008", "Viva-Voce", "1", "A", "3.75"]] }
+                ]
+            }
+            // ভবিষ্যতে নতুন ছাত্র যোগ করতে চাইলে এখানে কমা (,) দিয়ে একইভাবে আরেকটি রোল যুক্ত করতে পারবেন
+        };
+
+        function autofill(roll) { 
+            document.getElementById('rollInput').value = roll; 
+            searchResult(); 
+        }
+
+        function searchResult() {
+            const roll = document.getElementById('rollInput').value.trim();
+            const profileContainer = document.getElementById('profileContainer');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (studentData[roll]) {
+                errorMsg.style.display = 'none';
+                const student = studentData[roll];
+                
+                // নাম এবং অন্যান্য তথ্য ডাইনামিক করা
+                document.getElementById('valName').innerText = student.name;
+                document.getElementById('valRoll').innerText = student.roll;
+                document.getElementById('valReg').innerText = student.reg;
+                document.getElementById('valCgpa').innerText = student.cgpa;
+
+                let semHtml = '';
+                student.semesters.forEach(sem => {
+                    let rows = '';
+                    sem.courses.forEach(c => { 
+                        rows += `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td><b>${c[3]}</b></td><td>${c[4]}</td></tr>`; 
+                    });
+                    semHtml += `<div class="semester-section"><div class="semester-header"><h3>${sem.title}</h3><div class="gpa-badge">GPA: ${sem.gpa}</div></div><div class="table-responsive"><table><thead><tr><th>Course Code</th><th>Course Title</th><th>Cr</th><th>Gr</th><th>Pt</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+                });
+                document.getElementById('semestersList').innerHTML = semHtml;
+                profileContainer.style.display = 'block';
+            } else { 
+                errorMsg.style.display = 'block'; 
+                profileContainer.style.display = 'none'; 
+            }
+        }
+    </script>
+</body>
+</html>
